@@ -17,12 +17,6 @@ function App() {
 		console.log('ejecutando');
 		localStorage.setItem('datos', JSON.stringify(datos));
 	}, [datos]);
-
-	// Eliminar dato
-	const eliminarDato = (id) => {
-		const datosActualizados = datos.filter((dato) => dato.id !== id);
-		setDatos(datosActualizados);
-	};
 	return (
 		<div className='container mx-auto mt-20'>
 			<div className='flex justify-between'>
