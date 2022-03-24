@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
+import Header from './components/Header';
+import Formulario from './components/Formulario';
+import BoxInfo from './components/BoxInfo';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [datos, setDatos] = useState([]);
+
+	// useEffect para comprobar existencia de datos en LS
+	useEffect(() => {
+		const revisaLS = JSON.parse(localStorage.getItem('datos')) ?? [];
+		setDatos(revisaLS);
+	}, []);
+
+	// localStorage
+	useEffect(() => {
+		console.log('ejecutando');
+		localStorage.setItem('datos', JSON.stringify(datos));
+	}, [datos]);
+
+	// Eliminar dato
+	const eliminarDato = (id) => {
+		const datosActualizados = datos.filter((dato) => dato.id !== id);
+		setDatos(datosActualizados);
+	};
+	return (
+		<div className='container mx-auto mt-20'>
+			<div className='flex justify-between'>
+				<div></div>
+				<div>
+					<Header />
+					<Formulario datos={datos} setDatos={setDatos} />
+					{datos.map((dato, index) => {
+						return <BoxInfo key={index} dato={dato} />;
+					})}
+				</div>
+				<div></div>
+			</div>
+		</div>
+	);
 }
 
 export default App;
